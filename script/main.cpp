@@ -5,6 +5,7 @@
 
 using namespace std;
 
+
 class System{
     public:
         System(){
@@ -23,6 +24,10 @@ void transfer(){
 }
 
 void compute(){
+
+}
+
+void clockCycleEnd(){
 
 }
 
