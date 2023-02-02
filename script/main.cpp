@@ -8,13 +8,24 @@ using namespace std;
 class System{
     public:
         System(){
-            
+
         }
     private:
 
 };
 
-void transfer()
+void getData(){
+    
+}
+
+void transfer(){
+
+}
+
+void compute(){
+
+}
+
 
 int main(int argc, char* argv[]){
 
