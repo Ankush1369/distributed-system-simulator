@@ -1,7 +1,9 @@
 .vscode/*
 *.out
 *.exe
+*.o
 linking/*
 .DS_Store
 PRAM_Simulator/Makefile
+PRAM_Simulator/finalBuild
 varun_local/*
