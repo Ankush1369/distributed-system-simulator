@@ -2,5 +2,6 @@
 *.out
 *.exe
 linking/*
+.DS_Store
 PRAM_Simulator/Makefile
 varun_local/*
