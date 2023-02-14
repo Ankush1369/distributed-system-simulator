@@ -1,12 +1,12 @@
-// #include <map>
-// #include <string.h>
-// using namespace std;
+#include <map>
+#include <string.h>
+using namespace std;
 
-// struct Processor {
-//     int id;
-//     map<string, int> localData;
+struct Processor {
+    int id;
+    map<string, int> localData;
 
-// };
+};
 
 
 int add(int, int);
