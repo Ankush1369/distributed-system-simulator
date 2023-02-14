@@ -1,24 +1,20 @@
 #include <map>
 #include <iostream>
-using namespace std;
+#include "helper.hpp"
 
-extern int x;
-
-int add(int a, int b){
-    return a + b;
+int Processor::readData(string variableName)
+{
+    return this->localData[variableName];
 }
 
-int sub(int a, int b){
-    return a + b;
+void Processor::writeData(string variableName, int variableValue)
+{
+    this->localData[variableName] = variableValue;
 }
 
-int mult(int a, int b){
-    return a*b;
+Simulator::Simulator(int N)
+{
+    this->N = N;
+    Processors.resize(N);
 }
 
-int readData(int id, map<int, int> variable){
-    return id + 1;
-}
-void doubleThis(){
-    x = 2 * x;
-}
