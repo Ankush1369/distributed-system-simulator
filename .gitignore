@@ -3,3 +3,4 @@
 *.exe
 linking/*
 PRAM_Simulator/Makefile
+varun_local/*
