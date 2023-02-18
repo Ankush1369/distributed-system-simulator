@@ -7,3 +7,4 @@ linking/*
 PRAM_Simulator/Makefile
 PRAM_Simulator/finalBuild
 varun_local/*
+PRAM_Simulator/run.sh

@@ -1,0 +1,20 @@
+Compile the simulator c++ file with  the following command
+
+    g++ -fpic -c pramhelper.cpp simulator.cpp 
+    g++ -fpic -o libsim.so pramhelper.o simulator.o -shared 
+
+Compile the main file using following command after creating the above shared library 
+
+    g++ main.cpp -o main -lsim -I . -L . 
+
+Troubleshooting actions:
+
+1 . First check echo $LD_LIBRARY_PATH 
+2 . If it is empty then update it using the following command
+
+    LD_LIBRARY_PATH = <current_absolute_path>:$LD_LIBRARY_PATH
+    export LD_LIBRARY_PATH
+3 . If that doesn't work try the same thing by replacing LD_LIBRARY_PATH with DYLD_LIBRARY_PATH
+
+P.S.
+Make sure everything is run in the same directory.
