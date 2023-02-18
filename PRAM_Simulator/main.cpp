@@ -5,13 +5,12 @@ using namespace std;
 int x = 10;
 
 int main(){
-    int a = 10;
-    int b = 20;
-    int c = 40;
-    cout << calci(a, b, c) << '\n';
-    doubleThis();
-    doubleThis();
-    doubleThis();
-    cout << "Now x is " << x << '\n';
-    return 0;
+    Complex z1(12, 5);
+    Complex z2(9,-2);
+    Complex z3 = calci(1, z1, z2);
+    Complex z4 = calci(2, z1, z2);
+
+    cout << z1.getModulus() << '\n';
+    cout << z3.a << " " << z3.b << '\n';
+    cout << z4.a << " " << z4.b << '\n';
 }
