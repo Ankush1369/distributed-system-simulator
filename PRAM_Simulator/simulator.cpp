@@ -14,6 +14,8 @@ using namespace std;
 // }
 
 Complex calci(int operation, Complex z1, Complex z2){
+    cout << "This is similutor\n";
+    cout << "Testing\n";
     if(operation == 2){
         return add(z1, z2);
     }else{
