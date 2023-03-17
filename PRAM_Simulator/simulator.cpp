@@ -6,7 +6,7 @@ int x = 10;
 
 
 int main(){
-    Simulator mySimulator(4);
+    Simulator mySimulator;
     simulatorProgram(mySimulator);
     return 0;
 }

@@ -17,24 +17,15 @@ class Task{
 };
 
 
-class Memory {
-    public:
-        void* ptr;
-        Memory(void* value){
-            this->ptr = value;
-        }
-
-};
 
 class Processor {
     private:
-        map<string, Memory> localData;
-        Memory lastComputedValue;
+        map<string, void*> localData;
         int id;
     public:
-        Memory lastReadValue;
+        void* storedValue;
         void setId(int id);
-        Memory getData(string variableName);
+        void* getData(string variableName);
         void writeData(string variableName, void* variableValue);
 
 };
@@ -47,16 +38,29 @@ class Simulator {
         map<string, int> globalData;
         queue<Task> taskQueue;
         bool initialized;
+        bool isStaged;
     public:
         Simulator();
         void Initialize(int numberOfProcessors);
-        void* readData(int pid, string variableName);
-        void writeData(int, string variableName, void* dataValue);
+        void readData(int pid, int fromPid, string variableName);
+        template<class T> void writeData(int, string variableName, T dataValue);
+        // template<class T> void updateData(int, string variableName, T (*updateValue)(T));
         void* getStoredValue(int pid); //get last stored value by pid from its action
-        void compute(int pid, void* computedValue = NULL); //stores computed value if any
+        // void compute(int pid, void* computedValue = NULL); //stores computed value if any
+        void* getLocalValue(int pid, string variableName);
+        void stageStart();
         void stageComplete();
 };
 
 void simulatorProgram(Simulator);
 
-
+template<class T> void Simulator::writeData(int pid, string variableName, T dataValue){
+    if(this->isStaged){
+        T* dataPointer= new T;
+        *dataPointer = dataValue;
+        Task newTask(pid, variableName, (void *)dataPointer);
+        this->taskQueue.push(newTask);
+    }else{
+        cout << "Simulator is not staged to start any processing...\n";
+    }
+}

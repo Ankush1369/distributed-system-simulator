@@ -16,16 +16,19 @@ void Processor::setId(int id){
 }
 
 
-Memory Processor::getData(string variableName)
+void* Processor::getData(string variableName)
 {
-    return this->localData[variableName];
+    if(this->localData[variableName] != NULL){
+        return this->localData[variableName];
+    }else{
+        cout << "Variable " << variableName << " doesn't exist on processor " << this->id << '\n';
+        return (void *) NULL;
+    }
 }
 
 void Processor::writeData(string variableName, void* variableValue)
-{
-    if(this->localData.find(variableName) == this->localData.end()){
-        this->localData[variableName] = new Memory(variableValue);
-    }
+{   
+    this->localData[variableName] = variableValue;
 }
 
 
@@ -34,6 +37,7 @@ Simulator::Simulator()
     this->N = 4;
     this->Processors.resize(this->N);
     this->initialized = false;
+    this->isStaged = false;
 }
 
 void Simulator::Initialize(int numberOfProcessors){
@@ -45,26 +49,39 @@ void Simulator::Initialize(int numberOfProcessors){
     }
 }
 
-void* Simulator::readData(int pid, string variableName){
-    return this->Processors[pid].getData(variableName).ptr;
+void Simulator::readData(int pid, int fromPid, string variableName){
+    if(this->isStaged){
+        this->Processors[pid].storedValue = this->Processors[fromPid].getData(variableName);
+    }else{
+        cout << "Simulator is not staged to start any processing...\n";
+    }
 }
 
-void Simulator::writeData(int pid, string variableName, void* dataValue){
-    Task newTask(pid, variableName, dataValue);
-    this->taskQueue.push(newTask);
+void* Simulator::getLocalValue(int pid, string variableName){
+    return this->Processors[pid].getData(variableName);
 }
 
-// Processor pid computes this value and stores in a variable
-void compute(int pid, void* computedValue){
 
+void Simulator::stageStart(){
+    this->isStaged = true;
+    assert(this->taskQueue.empty());
 }
 
 void Simulator::stageComplete(){
-    
+    if(this->isStaged){
+        while(!this->taskQueue.empty()){
+            Task currentTask = this->taskQueue.front();
+            taskQueue.pop();
+            this->Processors[currentTask.pid].writeData(currentTask.variableName, currentTask.value);
+        }
+    }else{
+        cout << "Please start your staging before completing...\n";
+    }
+    this->isStaged = false;
 }
 
-
-
-
+void* Simulator::getStoredValue(int pid){
+    return this->Processors[pid].storedValue;
+}
 
 
