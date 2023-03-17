@@ -1,2 +1,3 @@
 #!/bin/bash
-g++-12 simulator.cpp -o build -lsim -I . -L .
+./createLibrary.sh
+g++-12 simulator.cpp -o mainBuild -lsim -I . -L .

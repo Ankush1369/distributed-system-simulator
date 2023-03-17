@@ -13,8 +13,8 @@ using namespace std;
 //     }
 // }
 
-void simulatorProgram(){
-    cout << "Starting the simultor";
+void simulatorProgram(Simulator userSimulator){
+    Initialize();
 }
 
 

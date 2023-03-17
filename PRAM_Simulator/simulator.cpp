@@ -4,7 +4,10 @@ using namespace std;
 
 int x = 10;
 
+
 int main(){
-    simulatorProgram();
+    Simulator mySimulator(4);
+    simulatorProgram(mySimulator);
     return 0;
 }
+

@@ -5,36 +5,64 @@
 #include "simulatorAPI.hpp"
 using namespace std;
 
-Processor::Processor(int id){
+Task::Task(int pid, string variableName, void* value){
+    this->pid = pid;
+    this->variableName = variableName;
+    this->value = value;
+}
+
+void Processor::setId(int id){
     this->id = id;
 }
 
-int Processor::readData(string variableName)
+
+Memory Processor::getData(string variableName)
 {
     return this->localData[variableName];
 }
 
-void Processor::writeData(string variableName, int variableValue)
+void Processor::writeData(string variableName, void* variableValue)
 {
-    this->localData[variableName] = variableValue;
-}
-
-Simulator::Simulator(int N)
-{
-    this->N = N;
-    this->Processors.resize(N);
-    for(int i=0; i<N; i++){
-        this->Processors[i] = new Processor(i);
+    if(this->localData.find(variableName) == this->localData.end()){
+        this->localData[variableName] = new Memory(variableValue);
     }
 }
 
-int Simulator::readData(int id, string variableName){
-    return this->Processors[id]->readData(variableName);
+
+Simulator::Simulator()
+{
+    this->N = 4;
+    this->Processors.resize(this->N);
+    this->initialized = false;
 }
 
-void Stage(){
+void Simulator::Initialize(int numberOfProcessors){
+    this->N = numberOfProcessors;
+    this->Processors.resize(numberOfProcessors);
+    this->initialized = false;
+    for(int i=0; i<numberOfProcessors; i++){
+        this->Processors[i].setId(i);
+    }
+}
+
+void* Simulator::readData(int pid, string variableName){
+    return this->Processors[pid].getData(variableName).ptr;
+}
+
+void Simulator::writeData(int pid, string variableName, void* dataValue){
+    Task newTask(pid, variableName, dataValue);
+    this->taskQueue.push(newTask);
+}
+
+// Processor pid computes this value and stores in a variable
+void compute(int pid, void* computedValue){
+
+}
+
+void Simulator::stageComplete(){
     
 }
+
 
 
 
