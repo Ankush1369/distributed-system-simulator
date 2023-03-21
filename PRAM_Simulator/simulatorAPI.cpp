@@ -15,6 +15,10 @@ void Processor::setId(int id){
     this->id = id;
 }
 
+int Processor::getID(){
+    return this->id;
+}
+
 
 void* Processor::getData(string variableName)
 {
@@ -29,6 +33,14 @@ void* Processor::getData(string variableName)
 void Processor::writeData(string variableName, void* variableValue)
 {   
     this->localData[variableName] = variableValue;
+}
+
+void Processor::setStoredValue(void* dataPointer){
+    this->storedValue = dataPointer;
+}
+
+void* Processor::getStoredValue(){
+    return this->storedValue;
 }
 
 
@@ -51,14 +63,32 @@ void Simulator::Initialize(int numberOfProcessors){
 
 void Simulator::readData(int pid, int fromPid, string variableName){
     if(this->isStaged){
-        this->Processors[pid].storedValue = this->Processors[fromPid].getData(variableName);
+        void* dataRead = this->Processors[fromPid].getData(variableName);
+        this->Processors[pid].setStoredValue(dataRead);
     }else{
         cout << "Simulator is not staged to start any processing...\n";
     }
 }
 
+void Simulator::writeData(int pid, string variableName, void* dataPointer){
+    if(this->isStaged){
+        Task newTask(pid, variableName, (void *)dataPointer);
+        this->taskQueue.push(newTask);
+    }else{
+        cout << "Simulator is not staged to start any processing...\n";
+    }
+}
+
+void* Simulator::getStoredValue(int pid){
+    return this->Processors[pid].getStoredValue();
+}
+
 void* Simulator::getLocalValue(int pid, string variableName){
     return this->Processors[pid].getData(variableName);
+}
+
+void Simulator::compute(int pid, void* dataPointer){
+    this->Processors[pid].setStoredValue(dataPointer);
 }
 
 
@@ -80,8 +110,5 @@ void Simulator::stageComplete(){
     this->isStaged = false;
 }
 
-void* Simulator::getStoredValue(int pid){
-    return this->Processors[pid].storedValue;
-}
 
 
