@@ -68,4 +68,23 @@ void simulatorProgram(Simulator userSimulator){
 
 }
 
+/*
+    userSimulator.execute(func(data));
+    userSimulator.read(func(id), "value");
+    userSimulator.write("data", );
+
+    ptr = new UserObject();
+    us.init(N, void *ptr)  - num of processor, 
+    us.prepareData();
+
+    us.read(function1(id))
+    us.execute(function2(id / Processor)) // on all processors
+    us.write(function3(id/ Processor)) // on all processors
+
+
+    user defined its own object structure..
+    us.read(func(id) -> );
+    user will write 3 functions -- read(int id, void *ptr), execute(), write()[]
+*/
+
 
