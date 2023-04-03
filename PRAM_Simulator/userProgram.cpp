@@ -64,11 +64,16 @@ using namespace std;
     user will write 3 functions -- read(int id, void *ptr), execute(), write()[]
 */
 
-void execute(map<string, void*> localData, void* varRef){
+void execute(map<string, void*>& localData, void* varRef){
     int currentBit = * (int *) localData["bit"];
     if(currentBit == 0){
         *((int *)varRef) = 0;
     }
+}
+
+void localExecute(map<string, void*>& localData){
+    int currentBit = * (int *) localData["bit"];
+    * (int *) localData["bit"] = 1 - currentBit;
 }
 
 
@@ -77,11 +82,9 @@ void simulatorProgram(Simulator us){
     us.initialize(N);
     int arr[N];
     for(int i=0; i<N; i++){
-        arr[i] = rand() % 2;
-        cout << arr[i] << " ";
+        arr[i] = 1;
         us.initializeData("bits", (arr+i), i);
     }
-    cout << '\n';
 
     
     int* result = new int;
@@ -90,6 +93,7 @@ void simulatorProgram(Simulator us){
     us.initializeData("result", result);
 
     us.readData("bits", "bit", identity);
+    us.execute(localExecute);
     us.writeData("result", execute, zero);
     cout << (*result) << '\n';
 }

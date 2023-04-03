@@ -4,22 +4,20 @@
 #include <queue>
 using namespace std;
 
-enum TaskType { READ , WRITE , IDLE , COMPUTE};
+// enum TaskType { READ , WRITE , IDLE , COMPUTE};
 
 int zero(int);
 int identity(int);
 
-class Task{
-    public:
-        TaskType type;
-        int pid;
-        string variableName;
-        void* value;
+// class Task{
+//     public:
+//         TaskType type;
+//         int pid;
+//         string variableName;
+//         void* value;
 
-        Task(int pid, string variableName, void* value);
-};
-
-
+//         Task(int pid, string variableName, void* value);
+// };
 
 class Processor {
     private:
@@ -36,8 +34,6 @@ class Processor {
 
         void storeData(string variableName, void* dataPointer);
         map<string, void*>& getLocalDataReference();
-        void localCompute(void (*compute)(map<string, void*>, void*), void*);
-
 };
 
 
@@ -46,7 +42,6 @@ class Simulator {
         int N;
         vector<Processor> Processors;
         map<string, map<int, void*> > sharedMemory;
-
         // map<string, int> globalData;
         // queue<Task> taskQueue;
         // bool initialized;
@@ -63,8 +58,8 @@ class Simulator {
 
         void initializeData(string variableName, void* data, int index = 0);
         void readData(string variableName, string storeName, int (*getIndex)(int) = identity);
-        void writeData(string variableName, void (*compute)(map<string, void*>, void*), int (*getIndex)(int));
-        void execute(void (*executeSomething)(map<string, void*>));
+        void writeData(string variableName, void (*compute)(map<string, void*>&, void*), int (*getIndex)(int));
+        void execute(void (*executeSomething)(map<string, void*>&));
 
         
 };
