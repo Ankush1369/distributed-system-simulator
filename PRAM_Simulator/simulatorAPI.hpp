@@ -6,6 +6,9 @@ using namespace std;
 
 enum TaskType { READ , WRITE , IDLE , COMPUTE};
 
+int zero(int);
+int identity(int);
+
 class Task{
     public:
         TaskType type;
@@ -21,15 +24,20 @@ class Task{
 class Processor {
     private:
         map<string, void*> localData;
-        int id;
-        void* storedValue;
+        // int id;
+        // void* storedValue;
     public:
-        void setId(int id);
-        int getID();
-        void* getData(string variableName);
-        void writeData(string variableName, void* variableValue);
-        void setStoredValue(void *);
-        void* getStoredValue();
+        // void setId(int id);
+        // int getID();
+        // void* getData(string variableName);
+        // void writeData(string variableName, void* variableValue);
+        // void setStoredValue(void *);
+        // void* getStoredValue();
+
+        void storeData(string variableName, void* dataPointer);
+        // to do any local computation on a processor
+        void execute(void (*executeSomething)(map<string, void*>)); 
+        void localCompute(void (*compute)(map<string, void*>, void*), void*);
 
 };
 
@@ -38,20 +46,28 @@ class Simulator {
     private:
         int N;
         vector<Processor> Processors;
-        map<string, int> globalData;
-        queue<Task> taskQueue;
-        bool initialized;
-        bool isStaged;
+        map<string, map<int, void*> > sharedMemory;
+
+        // map<string, int> globalData;
+        // queue<Task> taskQueue;
+        // bool initialized;
+        // bool isStaged;
     public:
-        Simulator();
-        void Initialize(int numberOfProcessors);
-        void readData(int pid, int fromPid, string variableName);
-        void writeData(int, string variableName, void* dataValue);
-        void* getStoredValue(int pid); //get last stored value by pid from its action
-        void compute(int pid, void* = NULL); //stores computed value if any
-        void* getLocalValue(int pid, string variableName);
-        void stageStart();
-        void stageComplete();
+        void initialize(int numberOfProcessors);
+        // void readData(int pid, int fromPid, string variableName);
+        // void writeData(int, string variableName, void* dataValue);
+        // void* getStoredValue(int pid); 
+        // void compute(int pid, void* = NULL); 
+        // void* getLocalValue(int pid, string variableName);
+        // void stageStart();
+        // void stageComplete();
+
+        // void initializeData(string variableName,void* arr,int N);
+        void initializeData(string variableName, void* data, int index = 0);
+        void readData(string variableName, string storeName, int (*getIndex)(int) = identity);
+        void writeData(string variableName, void (*compute)(map<string, void*>, void*), int (*getIndex)(int));
+
+        
 };
 
 void simulatorProgram(Simulator);
