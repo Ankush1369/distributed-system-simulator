@@ -17,24 +17,19 @@ void Processor::storeData(string variableName, void* dataPointer){
     this->localData[variableName] = dataPointer;
 }
 
+map<string, void*>& Processor::getLocalDataReference(){
+    return this->localData;
+}
+
 void Processor::localCompute(void (*compute)(map<string, void*>, void*), void* varRef){
     compute(this->localData, varRef);
 }
+
 
 void Simulator::initialize(int numberOfProcessors){
     this->N = numberOfProcessors;
     this->Processors.resize(numberOfProcessors);
 }
-
-void Processor::execute(void (*executeSomething)(map<string, void*>)){
-    executeSomething(this->localData);
-}
-
-// void Simulator::initializeData(string variableName,void* arr,int arrLength){
-//     for(int i=0; i<arrLength; i++){
-//         this->sharedMemory[variableName][i] = (arr+i);
-//     }
-// }
 
 void Simulator::initializeData(string variableName, void* dataPointer, int index /* = 0 */){
     this->sharedMemory[variableName][index] = dataPointer;
@@ -56,6 +51,12 @@ void Simulator::writeData(string variableName, void (*compute)(map<string, void*
         if(dataIndex >=0){
             this->Processors[i].localCompute(compute, this->sharedMemory[variableName][dataIndex]);
         }
+    }
+}
+
+void Simulator::execute(void (*executeSomething)(map<string, void*>)){
+    for(int i=0; i<this->N; i++){
+        executeSomething(this->Processors[i].getLocalDataReference());
     }
 }
 

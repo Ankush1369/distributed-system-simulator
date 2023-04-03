@@ -35,8 +35,7 @@ class Processor {
         // void* getStoredValue();
 
         void storeData(string variableName, void* dataPointer);
-        // to do any local computation on a processor
-        void execute(void (*executeSomething)(map<string, void*>)); 
+        map<string, void*>& getLocalDataReference();
         void localCompute(void (*compute)(map<string, void*>, void*), void*);
 
 };
@@ -62,10 +61,10 @@ class Simulator {
         // void stageStart();
         // void stageComplete();
 
-        // void initializeData(string variableName,void* arr,int N);
         void initializeData(string variableName, void* data, int index = 0);
         void readData(string variableName, string storeName, int (*getIndex)(int) = identity);
         void writeData(string variableName, void (*compute)(map<string, void*>, void*), int (*getIndex)(int));
+        void execute(void (*executeSomething)(map<string, void*>));
 
         
 };
