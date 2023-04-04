@@ -5,35 +5,18 @@
 using namespace std;
 
 // enum TaskType { READ , WRITE , IDLE , COMPUTE};
+enum STATE { START = 0, READ = 1, EXECUTE = 2, WRITE = 3};
 
 int zero(int);
 int identity(int);
 
-// class Task{
-//     public:
-//         TaskType type;
-//         int pid;
-//         string variableName;
-//         void* value;
-
-//         Task(int pid, string variableName, void* value);
-// };
-
 class Processor {
     private:
-        map<string, void*> localData;
-        // int id;
-        // void* storedValue;
+        map<string, int> localData;
+        int id;
     public:
-        // void setId(int id);
-        // int getID();
-        // void* getData(string variableName);
-        // void writeData(string variableName, void* variableValue);
-        // void setStoredValue(void *);
-        // void* getStoredValue();
-
-        void storeData(string variableName, void* dataPointer);
-        map<string, void*>& getLocalDataReference();
+        void storeData(string variableName, int value);
+        map<string, int>& getLocalDataReference();
 };
 
 
@@ -41,25 +24,15 @@ class Simulator {
     private:
         int N;
         vector<Processor> Processors;
-        map<string, map<int, void*> > sharedMemory;
-        // map<string, int> globalData;
-        // queue<Task> taskQueue;
-        // bool initialized;
-        // bool isStaged;
+        map<string, map<int, int> > sharedMemory;
+        STATE currentState;
     public:
         void initialize(int numberOfProcessors);
-        // void readData(int pid, int fromPid, string variableName);
-        // void writeData(int, string variableName, void* dataValue);
-        // void* getStoredValue(int pid); 
-        // void compute(int pid, void* = NULL); 
-        // void* getLocalValue(int pid, string variableName);
-        // void stageStart();
-        // void stageComplete();
 
-        void initializeData(string variableName, void* data, int index = 0);
+        void initializeData(string variableName, int* data, int length = 0);
         void readData(string variableName, string storeName, int (*getIndex)(int) = identity);
-        void writeData(string variableName, void (*compute)(map<string, void*>&, void*), int (*getIndex)(int));
-        void execute(void (*executeSomething)(map<string, void*>&));
+        void writeData(string variableName, void (*compute)(map<string, int>&, int&), int (*getIndex)(int));
+        void execute(void (*executeSomething)(map<string, int>&)); //local computation
 
         
 };

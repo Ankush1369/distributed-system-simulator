@@ -85,7 +85,6 @@ void simulatorProgram(Simulator us){
         arr[i] = 1;
         us.initializeData("bits", (arr+i), i);
     }
-
     
     int* result = new int;
     *result = 1;
@@ -97,5 +96,26 @@ void simulatorProgram(Simulator us){
     us.writeData("result", execute, zero);
     cout << (*result) << '\n';
 }
+
+
+// void simulatorProgram(Simulator us){
+//     int N = 10;
+//     int arr[N];
+//     for(int i=0; i<N; i++){
+//         arr[i] = rand() % 10;
+//         cout << arr[i] << " ";
+//         us.initializeData("arr", arr+i, i);
+//     }
+//     cout << '\n';
+
+//     for(int i=0; i<=log2(N); i++){
+//         int step = 1 << i;
+//         us.readData("arr", "next", [step](int a) -> int {
+//             return a - step;
+//         });
+//     }
+    
+
+// }
 
 
