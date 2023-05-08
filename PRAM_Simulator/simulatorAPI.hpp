@@ -2,6 +2,8 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <util.h>
+#include <functional>
 using namespace std;
 
 // enum TaskType { READ , WRITE , IDLE , COMPUTE};
@@ -28,11 +30,12 @@ class Simulator {
         STATE currentState;
     public:
         void initialize(int numberOfProcessors);
-
         void initializeData(string variableName, int* data, int length = 0);
-        void readData(string variableName, string storeName, int (*getIndex)(int) = identity);
-        void writeData(string variableName, void (*compute)(map<string, int>&, int&), int (*getIndex)(int));
-        void execute(void (*executeSomething)(map<string, int>&)); //local computation
+        void initializeArray(string variableName, int lenght, int defaultValue = 0);
+        void initializeData(string variableName, int data);
+        void readData(string variableName, string storeName, function<int(int)> getIndex = zero);
+        void writeData(string variableName, function<pair<bool, int>(int, map<string, int>&)> compute, function<int(int)> getIndex = zero);
+        void execute(function<void(int, map<string, int>&)> executeSomething); //local computation
 
         
 };
